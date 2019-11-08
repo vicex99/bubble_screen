@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="loginStyle.css">
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+
+<!-- load the d3.js library -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<script>
+    var svg = d3.select("body")
+        .attr('scroll', d3.scrollTop = 0 )
+        .append("svg")
+        .style("background-color", "green")
+        .style("width", "100%")
+        .style("height", "1200");
+
+    // radio, [x, y], [vx, vy], time
+    circles = [
+        // [50, [-200, 1200], 100, [400, -700], 6000],
+        [20, ["-10%", "-10%"], 60, ["50%", "50%"]],
+        // [80, [400, 200], 20, [-200, -900]],
+        //
+        // [50, [-10, -10], 50, [1200, 1000]],
+        // [50, [-10, -10], 50, [1200, 1000]],
+        // [10, [400, 200], 200, [-200, -900]],
+        //
+        // [50, [-10, -10], 50, [1200, 1000]],
+        // [50, [-10, -10], 50, [1200, 1000]],
+        // [50, [-10, -10], 50, [1200, 1000]]
+    ];
+
+    function circleTransition(easement, data, duration){
+
+        function repeat() {
+            timeCircle
+                .attr('cx', data[1][0])
+                .attr('cy', data[1][1])
+                .transition()
+                .ease(easement)
+                .duration(duration)
+                .attr('cx', function () {
+                    return parseInt(data[1][0]) + parseInt(data[3][0])
+                })
+                .attr('cy', function () {
+                    return parseInt(data[1][1]) + parseInt(data[3][1])
+                })
+                .attr("r", data[2])
+                .transition()
+                .ease(easement)
+                .duration(duration)
+                .attr('cx', function () {
+                    let random = Boolean(Math.round(Math.random()));
+                    if(random){
+                        return data[1][0]
+                    } else {
+                        return data[3][0]
+                    }
+                })
+                .attr('cy', function () {
+                    let random = Boolean(Math.round(Math.random()));
+                    if(random){
+                        return data[1][1]
+                    } else {
+                        return data[3][1]
+                    }
+                })
+                .attr("r", data[2])
+                .on("end", repeat);
+        }
+
+        var timeCircle = svg.append("circle")
+            .attr("fill", "steelblue")
+            .attr("r", data[0]);
+        repeat();
+    }
+
+    time = 5000;
+    circles.forEach( function(circle){
+        circleTransition(d3.easeQuad, circle, 8000);
+    })
+
+</script>
+</body>
