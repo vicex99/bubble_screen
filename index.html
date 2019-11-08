@@ -47,10 +47,10 @@
                 .ease(easement)
                 .duration(duration)
                 .attr('cx', function () {
-                    return parseInt(data[1][0]) + parseInt(data[3][0])
+                    return data[1][0] + data[3][0]
                 })
                 .attr('cy', function () {
-                    return parseInt(data[1][1]) + parseInt(data[3][1])
+                    return data[1][1] + data[3][1]
                 })
                 .attr("r", data[2])
                 .transition()
